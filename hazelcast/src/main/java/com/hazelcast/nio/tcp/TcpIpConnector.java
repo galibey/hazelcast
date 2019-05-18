@@ -202,7 +202,7 @@ class TcpIpConnector {
                     closeConnection(connection, e);
                     closeSocket(socketChannel);
                     logger.log(level, "Could not connect to: " + socketAddress + ". Reason: " + e.getClass().getSimpleName()
-                            + "[" + e.getMessage() + "]");
+                            + "[" + e.getMessage() + "]", e);
                     throw e;
                 }
             } finally {
