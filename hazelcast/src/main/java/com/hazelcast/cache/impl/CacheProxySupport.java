@@ -73,13 +73,16 @@ import static com.hazelcast.util.ExceptionUtil.rethrowAllowedTypeFirst;
 import static com.hazelcast.util.SetUtil.createHashSet;
 
 /**
- * Abstract class providing cache open/close operations and {@link NodeEngine}, {@link CacheService} and
- * {@link SerializationService} accessor which will be used by implementation of {@link com.hazelcast.cache.ICache}
- * in server or embedded mode.
+ * Abstract {@link com.hazelcast.cache.ICache} implementation which provides shared internal implementations
+ * of cache operations like put, replace, remove and invoke. These internal implementations are delegated
+ * by actual cache methods.
+ * <p/>
+ * <p>Note: this partial implementation is used by server or embedded mode cache.</p>
  *
  * @param <K> the type of key.
  * @param <V> the type of value.
  * @see com.hazelcast.cache.impl.CacheProxy
+ * @see com.hazelcast.cache.ICache
  */
 @SuppressWarnings({"checkstyle:methodcount", "checkstyle:classfanoutcomplexity"})
 abstract class CacheProxySupport<K, V>
@@ -255,8 +258,8 @@ abstract class CacheProxySupport<K, V>
     protected void createAndSubmitLoadAllTask(Set<Data> keysData, boolean replaceExistingValues,
                                               CompletionListener completionListener) {
         try {
-            CacheProxyLoadAllTask loadAllTask = new CacheProxyLoadAllTask(getNodeEngine(), operationProvider, keysData, replaceExistingValues,
-                    completionListener, getServiceName());
+            CacheProxyLoadAllTask loadAllTask = new CacheProxyLoadAllTask(getNodeEngine(), operationProvider, keysData,
+                    replaceExistingValues, completionListener, getServiceName());
             ExecutionService executionService = getNodeEngine().getExecutionService();
             final CompletableFutureTask<Object> future = (CompletableFutureTask<Object>) executionService
                     .submit("loadAll-" + nameWithPrefix, loadAllTask);

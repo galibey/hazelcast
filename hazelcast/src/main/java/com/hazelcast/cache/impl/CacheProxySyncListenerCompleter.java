@@ -31,6 +31,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static com.hazelcast.cache.impl.operation.MutableOperation.IGNORE_COMPLETION;
 import static java.lang.Thread.currentThread;
 
+/**
+ * Implementation of {@link CacheSyncListenerCompleter} for usage inside {@link CacheProxySupport}. Encapsulates management of
+ * countdown latches as well as cache entry listeners. Supposed to be created for each {@link CacheProxy} instance.
+ */
 class CacheProxySyncListenerCompleter
         implements CacheSyncListenerCompleter {
 
@@ -177,5 +181,4 @@ class CacheProxySyncListenerCompleter
             return asyncListenerRegistrations.values();
         }
     }
-
 }

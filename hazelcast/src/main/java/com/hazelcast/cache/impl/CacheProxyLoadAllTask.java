@@ -16,6 +16,7 @@
 
 package com.hazelcast.cache.impl;
 
+import com.hazelcast.cache.impl.operation.CacheLoadAllOperation;
 import com.hazelcast.core.ManagedContext;
 import com.hazelcast.nio.Address;
 import com.hazelcast.nio.serialization.Data;
@@ -36,6 +37,10 @@ import static com.hazelcast.util.ExceptionUtil.rethrow;
 import static com.hazelcast.util.MapUtil.createHashMap;
 import static com.hazelcast.util.SetUtil.createHashSet;
 
+/**
+ * Task for creating and invoking {@link CacheLoadAllOperation} operations on all partitions owners of all provided keys.
+ * Optional {@link CompletionListener} can be provided for callback after all operations are finished.
+ */
 final class CacheProxyLoadAllTask implements Runnable {
 
     /**
@@ -121,5 +126,4 @@ final class CacheProxyLoadAllTask implements Runnable {
         }
         return ownerKeys;
     }
-
 }
